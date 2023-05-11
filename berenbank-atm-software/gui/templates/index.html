@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <title>Berenbank</title>
+</head>
+<body id="file">
+    kek
+</body>
+</html>
+
+<script>
+
+
+        window.socket = io();
+
+        window.socket.on('page', function(msg) {
+            console.log(file)
+            file.innerHTML = msg;
+        });
+    
+        window.socket.on('page_data', function(msg) {
+            console.log(msg);
+            pin.innerHTML += '*';
+        });
+</script>

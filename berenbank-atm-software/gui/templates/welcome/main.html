@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+
+    <title>Welcome</title>
+</head>
+<body>
+    <!-- <img src="{{ url_for('static', filename='berenbank.png') }}" id="logo"> -->
+    <img src="../../static/berenbank.png" id="logo">
+    <div class="content mainBG">
+        <div id="scan">
+            <!-- <img src="{{ url_for('static', filename='scan.png') }}" id="scanIcon"> -->
+            <img src="../../static/scan.png" id="scanIcon">
+            <p>Scan uw pass</p>
+        </div>
+        <h1>Welkom bij de Berenbank.</h1>
+    </div>
+</body>
+</html>
+
+<style>
+    #scanIcon {
+        width: 200px;
+    }
+
+    #scan {
+        margin: 40px auto;
+    }
+
+    #scan p {
+        text-align: center;
+        font-size: 24px;
+        margin: 5px;
+
+    }
+
+    .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .content h1{
+        margin: auto;
+        font-size: 50px;
+        text-decoration: underline;
+    }
+
+    
+    /* send to static or smth */
+
+    .mainBG {
+        background-color: #E8E8E8;
+    }
+
+    body {
+        font-family: 'Inter';
+        margin: 0;
+    }
+
+    #logo {
+        width: 100px;
+        margin: 10px;
+    }
+
+</style>

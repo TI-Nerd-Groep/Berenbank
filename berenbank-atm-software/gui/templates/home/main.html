@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+
+    <title>Home</title>
+</head>
+<body>
+    <div class="page main-bg">
+        <!-- <img src="{{ url_for('static', filename='berenbank.png') }}" id="logo"> -->
+        <img src="../../static/berenbank.png" id="logo">
+            
+        <div class="content">
+            <h1>Maak een keuze</h1>
+            <div id="main-options">
+                <div class="option-l">
+                    <div class="interaction-bg"></div>
+                    <h2>Geld opnemen</h2>
+                </div>
+                <div class="option-r">
+                    <h2>Huidig saldo</h2>
+                    <div class="interaction-bg"></div>
+                </div>
+            </div>
+
+            <div class="option-l small">
+                <div class="interaction-bg"></div>
+                <h3>Afbreken</h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    .content {
+        margin: 20px auto;
+        width: 80%;
+        text-align: center;
+    }
+
+    .content p {
+        margin: 15px;
+        font-size: 20px;
+    }
+
+    #main-options {
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .option-r, .option-l {
+        max-width: 60%;
+        display: grid;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .option-r h2, .option-l h2 {
+        margin: 20px;
+    }
+
+    .option-l div {
+        border-radius: 10px 0 0 10px;
+    }
+    
+    .option-r div {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .option-r {
+        grid-template-columns: 2fr 1fr;
+        margin-left: auto;
+    }
+
+    .option-l {
+        margin-right: auto;
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .small {
+        margin-top: 40px;
+        width: 25%;
+    }
+
+    .small h3 {
+        margin: 10px;
+    }
+
+    /* send to static or smth */
+    .page {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .main-bg {
+        background-color: #E8E8E8;
+    }
+
+    .interaction-bg{
+        background-color: #100C1A;
+        opacity: 79%;
+    }
+
+    body {
+        font-family: 'Inter';
+        margin: 0;
+        color: #423F4A;
+    }
+    
+    #logo {
+        width: 100px;
+        margin: 10px;
+    }
+
+</style>

@@ -1,0 +1,63 @@
+
+<div class="page main-bg">
+    <!-- <img src="{{ url_for('static', filename='berenbank.png') }}" id="logo"> -->
+    <img src="../../static/berenbank.png" id="logo">
+        
+    <div class="content">
+        <p>Voer uw pincode in</p>
+        <div id="pinBox" class="interaction-bg">
+            <p id="pin"></p>
+        </div>
+        <p>Druk op OK om door te gaan</p>
+    </div>
+</div>
+<style>
+
+    .content {
+        margin: 20px auto;
+        width: 70%;
+        background-color: #fff;
+        border-radius: 30px;
+        text-align: center;
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    .content p {
+        margin: 15px;
+        font-size: 20px;
+    }
+
+    #pinBox {
+        color: #fff;
+        margin: 0 5%;
+        letter-spacing: 5px;
+        border-radius: 10px;
+    }
+
+    /* send to static or smth */
+    .page {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .main-bg {
+        background-color: #E8E8E8;
+    }
+
+    body {
+        font-family: 'Inter';
+        margin: 0;
+    }
+
+    #logo {
+        width: 100px;
+        margin: 10px;
+    }
+
+    .interaction-bg{
+        background-color: #100C1A;
+        opacity: 79%;
+    }
+    
+</style>
