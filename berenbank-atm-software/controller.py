@@ -27,8 +27,11 @@ except Error as e:
 bus = smbus.SMBus(1)
 address = 0x2a
 
+address_keypad = 0x2c
+
 while True:
     data = ""
+    data_keypad = ""
     
     for i in range(0, 11):
         data += chr(bus.read_byte(address));
@@ -37,6 +40,11 @@ while True:
     cursor.execute(query_last_name, (data,))
     for (info) in cursor:
         print("Last Name: {}".format(info))
+        
+    for i in range(0, 4):
+        data_keypad += chr(bus.read_byte(address_keypad));
+    print(data_keypad)
+        
     time.sleep(1);
 
 
