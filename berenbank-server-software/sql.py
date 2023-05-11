@@ -1,5 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
+import socketio
+
+sio = socketio.Client()
 
 # Queries
 get_id = ("SELECT id FROM User "
@@ -27,6 +30,16 @@ try:
         print("You're connected to database: ", record)
 
     cursor = connection.cursor()
+    cursor.execute(get_name, ("8E E8 1F 02",))
+    
+    for (firstName, lastName) in cursor:
+        first_name = firstName
+        last_name = lastName
+        
+        print(first_name)
+        print(last_name)
+    
+    cursor.close()
 
 except Error as e:
     print("Error while connecting to MySQL, e")
