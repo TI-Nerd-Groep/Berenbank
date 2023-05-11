@@ -27,35 +27,35 @@ address_numpad = 0x2c
 current_state = App_State.IDLE
 
 def main():
-	global current_state
-	global bus
-	global address_rfid
-	global address_numpad
+    global current_state
+    global bus
+    global address_rfid
+    global address_numpad
     
-	while True:
-		try:
-			if current_state == App_State.IDLE:
-				socket.emit("redirect", "welcome")
+    while True:
+        try:
+            if current_state == App_State.IDLE:
+                socket.emit("redirect", "welcome")
 
-				print(request_bytes(address_rfid, 11))
-				current_state = App_State.PIN
+                print(request_bytes(address_rfid, 11))
+                current_state = App_State.PIN
 
-			if current_state == App_State.PIN:
-				socket.emit("redirect", "pin")
+            if current_state == App_State.PIN:
+                socket.emit("redirect", "pin")
 
-				pin = ""
-				for _ in range(4):
-				   pin += request_bytes(address_numpad, 1)
-				   socket.emit("page_data", "*")
-				print(pin)
+                pin = ""
+                for _ in range(4):
+                   pin += request_bytes(address_numpad, 1)
+                   socket.emit("page_data", "*")
+                print(pin)
 
-				current_state = App_State.HOME
+                current_state = App_State.HOME
 
-			if current_state == App_State.HOME:
-				socket.emit("redirect", "home")
-				print("home?")
-		except Exception as e:
-			print(e)
+            if current_state == App_State.HOME:
+                socket.emit("redirect", "home")
+                print("home?")
+        except Exception as e:
+            print(e)
 
     
 
