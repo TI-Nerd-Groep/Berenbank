@@ -37,7 +37,9 @@ def main():
             if current_state == App_State.IDLE:
                 socket.emit("redirect", "welcome")
 
-                print(request_bytes(address_rfid, 11))
+                customerUID = request_bytes(address_rfid, 11)
+                socket.emit("sendUID", customerUID)
+                print(customerUID)
                 current_state = App_State.PIN
 
             if current_state == App_State.PIN:
@@ -47,9 +49,10 @@ def main():
                 for _ in range(4):
                    pin += request_bytes(address_numpad, 1)
                    socket.emit("page_data", "*")
+                socket.emit("sendPin", pin)
                 print(pin)
 
-                current_state = App_State.HOME
+                current_state = App_State.PIN
 
             if current_state == App_State.HOME:
                 socket.emit("redirect", "home")

@@ -24,6 +24,14 @@ def redirect(template: str):
 def update_page_data(data):
     socket.emit("page_data", data)
 
+@socket.on("sendUID")
+def sendUIDToServer(customerUID):
+    socket.emit("UID", customerUID)
+
+@socket.on("sendPin")
+def sendPinToServer(pinCode):
+    socket.emit("pin", pinCode)
+
 def get_page_data(folder):
     return codecs.open(f"{app.template_folder}/{folder}/main.html", "r", "utf-8").read()
 
