@@ -1,0 +1,4 @@
+{
+    "sketch": "module-software\\bonprinter\\Bonprinter\\src\\main.cpp",
+    "board": "arduino:avr:uno"
+}
