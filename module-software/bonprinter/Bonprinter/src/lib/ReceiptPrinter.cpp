@@ -18,7 +18,7 @@ public:
         printer.begin();
     }
 
-    void PrintReceipt(String date, float amount)
+    void PrintReceipt(String date, String amount)
     {
         WriteHeader();
         WriteDetails(date, amount);
@@ -35,10 +35,10 @@ public:
         printer.setFont();
     }
 
-    void WriteDetails(String date, float amount)
+    void WriteDetails(String date, String amount)
     {
         printer.println("Datum: " + date);
-        printer.println("Bedrag: " + (String) amount);
+        printer.println("Bedrag: " + amount);
     }
 
 };
