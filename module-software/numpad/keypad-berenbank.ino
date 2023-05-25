@@ -1,4 +1,7 @@
 #include <Keypad.h>
+#include <Wire.h>
+
+#define I2C_ADDRESS 0x2C
 
 const int ROWS = 4;
 const int COLS = 4;
@@ -9,6 +12,9 @@ char keys[ROWS][COLS] = {
   {'7', '8', '9', 'C'},
   {'*', '0', '#', 'D'}
 };
+
+char data[5];
+int index = 0;
 
 byte row_pins[ROWS] = {9, 8, 7, 6}; 
 byte col_pins[COLS] = {5, 4, 3, 2}; 
@@ -27,11 +33,22 @@ String get_input(uint8_t len, boolean numeric = false){
     return result;
 }
 
-void setup(){
-    Serial.begin(9600);
+void sendData()
+{
+  Wire.write(data[index]);
+  ++index;
+  if (index >= 4) {
+    index = 0;
+  }
+}
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin(I2C_ADDRESS);
+  Wire.onRequest(sendData);
 }
 
 void loop(){
-
-    Serial.println(get_input(4, true));
+    get_input(4, true).toCharArray(data, 5);
+    Serial.println(data);
 }
