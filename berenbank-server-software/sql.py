@@ -14,6 +14,11 @@ get_name = ("SELECT firstName, lastName FROM User "
 get_pin = ("SELECT Pincode FROM User "
            "WHERE Card_UID = %s")
 
+get_balance = ("SELECT balance FROM User "
+               "WHERE Card_UID = %s")
+
+update_balance = ("")
+
 connection = mysql.connector.connect(host='127.0.0.1',
                                     database='testdb',
                                     user='pacy',
@@ -70,10 +75,22 @@ def get_pin_code(pin):
     
     if pin == correct_pin:
         print("Correct pin")
+        sio.emit("page_data", "Correct pin")
     else:
         print("Incorrect pin")
+        sio.emit("page_data", "Incorrect pin")
     print(correct_pin)
     print(pin)
+    
+@sio.on("balance")
+def get_balance():
+    cursor = connection.cursor()
+    cursor.execute(get_balance, (customer_UID,))
+    
+    for (balance,) in cursor:
+        user_balance = balance
+        
+    print(user_balance)
     
 # Fill in generated url from ngrok. 
 sio.connect("https://")

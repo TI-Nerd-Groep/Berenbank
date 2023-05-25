@@ -8,6 +8,11 @@ class App_State(Enum):
     IDLE = 0
     PIN = 1     
     HOME = 2
+    CHOOSE = 3
+    BALANCE = 4
+    SNELPIN = 5
+    WAIT = 6
+    
 
 class Https_Method(Enum):
     GET = 0
