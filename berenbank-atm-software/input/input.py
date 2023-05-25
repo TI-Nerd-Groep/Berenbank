@@ -23,6 +23,7 @@ socket.connect("https://127.0.0.1:5000")
 bus = smbus.SMBus(1)
 address_rfid = 0x2a
 address_numpad = 0x2c
+address_receipt = 0x2B
 
 current_state = App_State.IDLE
 
@@ -35,7 +36,7 @@ def main():
     while True:
         try:
             if current_state == App_State.IDLE:
-                send_message("12/13/2023;123.80")
+                send_message(address_receipt, "12/13/2023;123.80")
                 socket.emit("redirect", "welcome")
 
                 customerUID = request_bytes(address_rfid, 11)
