@@ -36,7 +36,8 @@ def connect():
 
     except Error as e:
         print("Error while connecting to MySQL, e")
-
+        
+# Auth events
 @sio.on("UID")
 def get_customer_name(UID):
     cursor = connection.cursor()
@@ -75,5 +76,5 @@ def get_pin_code(pin):
     print(pin)
     
 # Fill in generated url from ngrok. 
-sio.connect("https://cc3f-45-84-40-171.ngrok-free.app")
+sio.connect("https://")
 
