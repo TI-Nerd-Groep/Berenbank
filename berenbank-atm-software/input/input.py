@@ -35,6 +35,7 @@ def main():
     while True:
         try:
             if current_state == App_State.IDLE:
+                send_message("12/13/2023;123.80")
                 socket.emit("redirect", "welcome")
 
                 customerUID = request_bytes(address_rfid, 11)
@@ -74,6 +75,11 @@ def request_bytes(addr: str, amount: int) -> str:
             data += char
 
     return data
+
+def send_message(addr: str, msg: str):
+    for char in msg:
+        bus.write_byte(addr, char)
+
 
 def https_request(endpoint: str, method: Https_Method, params: dict):
     pass
