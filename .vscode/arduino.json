@@ -1,4 +1,4 @@
 {
-    "sketch": "module-software\\bonprinter\\Bonprinter\\src\\main.cpp",
+    "sketch": "module-software\\sidebuttons\\main.ino",
     "board": "arduino:avr:uno"
 }
