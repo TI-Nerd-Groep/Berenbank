@@ -2,6 +2,9 @@ import socketio
 import smbus
 import time
 import requests
+from escpos.printer import Serial
+
+
 from enum import Enum
 
 class App_State(Enum):
@@ -23,6 +26,7 @@ socket.connect("https://127.0.0.1:5000")
 bus = smbus.SMBus(1)
 address_rfid = 0x2a
 address_numpad = 0x2c
+address_receipt = 0x2B
 
 current_state = App_State.IDLE
 
@@ -35,6 +39,11 @@ def main():
     while True:
         try:
             if current_state == App_State.IDLE:
+                """ 19200 Baud, 8N1, Flow Control Enabled """
+                p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
+                p.text("Hello World\n")
+                
+                
                 socket.emit("redirect", "welcome")
 
                 customerUID = request_bytes(address_rfid, 11)
@@ -80,5 +89,3 @@ def https_request(endpoint: str, method: Https_Method, params: dict):
 
 if __name__ == "__main__":
     main()
-
-
