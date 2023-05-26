@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <style>
         body {
             display: grid;
@@ -60,59 +64,46 @@
 
         .button:nth-child(3) {
             grid-column: 1 / span 1;
-            grid-row: 3 / span 1;
-        }
-
-        .button:nth-child(4) {
-            grid-column: 1 / span 1;
             grid-row: 4 / span 1;
         }
 
-        .button:nth-child(5) {
+        .button:nth-child(4) {
             grid-column: 3 / span 1;
             grid-row: 1 / span 1;
         }
 
-        .button:nth-child(6) {
+        .button:nth-child(5) {
             grid-column: 3 / span 1;
             grid-row: 2 / span 1;
         }
 
-        .button:nth-child(7) {
+        .button:nth-child(6) {
             grid-column: 3 / span 1;
             grid-row: 3 / span 1;
         }
 
-        .button:nth-child(8) {
+        .button:nth-child(7) {
             grid-column: 3 / span 1;
             grid-row: 4 / span 1;
         }
 
-        .div
+        p
         {
             grid-area: 2/2/3/3;
-            background-color: white;
-            padding: 10px;
-            width: 70%;
-            text-align: center;
-            color: black;
-            margin: 50px;
-            border-radius: 10px;
             margin: auto;
+            font-size: 30px;
         }
-
     </style>
 </head>
 <body>
-    <button class="button button-left">+ €5</button>
-    <button class="button button-left">+ €20</button>
-    <button class="button button-left">+ €50</button>
+    <button class="button button-left">€5</button>
+    <button class="button button-left">€20</button>
     <button class="button button-left">Afbreken</button>
-    <button class="button button-right">- €5</button>
-    <button class="button button-right">- €20</button>
-    <button class="button button-right">- €50</button>
+    <button class="button button-right">€50</button>
+    <button class="button button-right">€75</button>
+    <button class="button button-right">Ander bedrag</button>
     <button class="button button-right">Terug</button>
 
-    <div class="div"> Kies een bedrag</div>
+    <p> Kies een bedrag</p>
 </body>
 </html>

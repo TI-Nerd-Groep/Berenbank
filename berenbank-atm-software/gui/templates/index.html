@@ -24,7 +24,23 @@
         });
     
         window.socket.on('page_data', function(msg) {
-            console.log(msg);
-            pin.innerHTML += '*';
+            pin.innerHTML += msg;
+            if (msg == 1) {
+                pin.innerHTML = 'Correct';
+            }
+            if (msg == 0) {
+                pin.innerHTML = 'Incorrect';
+            }
+            if (msg == '*' && pin.innerHTML == 'Incorrect*') {
+                pin.innerHTML = '*';
+            }
         });
+
+        window.socket.on('page_data_balance2', function(msg) {
+            balance.innerHTML = '€' + msg;
+        });
+
+        window.socket.on('show_block', function() {
+            block.innerHTML = "Uw pas is geblokkeerd. Neem contact op met uw bank.";
+        }); 
 </script>
