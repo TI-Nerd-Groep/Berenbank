@@ -1,8 +1,12 @@
 import mysql.connector
 from mysql.connector import Error
 import socketio
+import requests
 
-sio = socketio.Client()
+http_session = requests.Session()
+http_session.verify = False
+
+sio = socketio.Client(http_session = http_session)
 
 # Queries
 get_id = ("SELECT id FROM User "
@@ -17,7 +21,18 @@ get_pin = ("SELECT Pincode FROM User "
 get_balance = ("SELECT balance FROM User "
                "WHERE Card_UID = %s")
 
-update_balance = ("")
+get_blocked = ("SELECT isBlocked FROM User "
+               "WHERE Card_UID = %s")
+
+withdraw = ("UPDATE User "
+            "SET balance = balance - %d "
+            "WHERE Card_UID = %s")
+
+set_blocked = ("UPDATE User SET isBlocked = TRUE "
+               "WHERE Card_UID = %s")
+
+set_unblocked = ("UPDATE User SET isBlocked = FALSE "
+                 "WHERE Card_UID = %s")
 
 connection = mysql.connector.connect(host='127.0.0.1',
                                     database='testdb',
@@ -75,23 +90,47 @@ def get_pin_code(pin):
     
     if pin == correct_pin:
         print("Correct pin")
-        sio.emit("page_data", "Correct pin")
+        sio.emit("page_data", 1)
+        sio.emit("correct_pin")
     else:
         print("Incorrect pin")
-        sio.emit("page_data", "Incorrect pin")
+        sio.emit("page_data", 0)
+        
     print(correct_pin)
     print(pin)
+
+    cursor.close()
     
 @sio.on("balance")
-def get_balance():
+def get_amount():
     cursor = connection.cursor()
     cursor.execute(get_balance, (customer_UID,))
     
     for (balance,) in cursor:
-        user_balance = balance
+        user_balance = str(balance)
         
     print(user_balance)
+    sio.emit("page_data_balance", user_balance)
+    
+    cursor.close()
+
+@sio.on("blocked")
+def get_block_status():
+    cursor = connection.cursor()
+    cursor.execute(get_blocked, (customer_UID,))
+    
+    for (isBlocked,) in cursor:
+        block_status = isBlocked
+
+    cursor.close()
+    cursor = connection.cursor()
+    
+    sio.emit("block_message")
+    cursor.execute(set_blocked, (customer_UID,))
+    connection.commit()
+    cursor.close()
+    print(block_status)
     
 # Fill in generated url from ngrok. 
-sio.connect("https://")
+sio.connect("https://d053-45-84-40-165.ngrok-free.app")
 
