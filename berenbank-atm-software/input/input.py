@@ -48,8 +48,7 @@ def main():
                 """ 19200 Baud, 8N1, Flow Control Enabled """
                 p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
                 p.text("Hello World\n")
-                
-                
+
                 tries = 0
                 socket.emit("redirect", "welcome")
 
