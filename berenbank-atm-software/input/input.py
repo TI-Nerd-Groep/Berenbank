@@ -21,6 +21,16 @@ class App_State(Enum):
 class Https_Method(Enum):
     GET = 0
     POST = 1     
+
+class sidebutton(Enum):
+    L1 = 4
+    L2 = 5
+    L3 = 6
+    L4 = 7
+    R1 = 8
+    R2 = 9
+    R3 = 10
+    R4 = 11
     
 http_session = requests.Session()
 http_session.verify = False
@@ -33,6 +43,7 @@ bus = smbus.SMBus(1)
 address_rfid = 0x2a
 address_numpad = 0x2c
 address_receipt = 0x2B
+address_sidebuttons = 0x2F
 
 current_state = App_State.IDLE
 
@@ -77,27 +88,82 @@ def main():
             if current_state == App_State.HOME:
                 socket.emit("redirect", "home")
                 print("home?")
-                current_state = App_State.BALANCE
+
+                btn = request_bytes(address_sidebuttons, 1)
+
+                if btn in {sidebutton.L2, sidebutton.L3}:
+                    current_state = App_State.SNELPIN
+                
+                elif btn in {sidebutton.R2, sidebutton.R3}:
+                    current_state = App_State.BALANCE
+
+                elif btn == sidebutton.L4:
+                    end()
             
             if current_state == App_State.BALANCE:
                 print("balance is key")
                 socket.emit("redirect", "balance")
                 socket.emit("show_balance")
-                current_state = App_State.SNELPIN
+
+                btn = request_bytes(address_sidebuttons, 1)
+                
+                if btn == sidebutton.R4:
+                    current_state = App_State.HOME
+
+                elif btn == sidebutton.L4:
+                    end()
             
             if current_state == App_State.SNELPIN:
                 print("blazingly fast")
                 socket.emit("redirect", "snelpin")
-                current_state = App_State.CHOOSE
-            
+
+                btn = request_bytes(address_sidebuttons, 1)
+
+                if btn == sidebutton.L1:
+                    # request 5 emeralds
+                    ...
+
+                elif btn == sidebutton.L2:
+                    # request 20 emeralds
+                    ...
+                
+                elif btn == sidebutton.R1:
+                    #request 50 emeralds
+                    ...
+
+                elif btn == sidebutton.R2:
+                    #request 75 emeralds
+                    ...
+                
+                elif btn == sidebutton.R3:
+                    current_state = App_State.CHOOSE
+
+                elif btn == sidebutton.R4:
+                    current_state = App_State.HOME
+
+                elif btn == sidebutton.L4:
+                    end()
+
+
             if current_state == App_State.CHOOSE:
                 print("Picky pick")
+
                 socket.emit("redirect", "choose")
 
         except Exception as e:
             print(e)
 
     
+def end():
+    global current_state
+
+    # reset all local variables
+    #
+    #
+    
+    current_state = App_State.SNELPIN
+
+
 def correct_pin():
     global current_state
     current_state = App_State.HOME
