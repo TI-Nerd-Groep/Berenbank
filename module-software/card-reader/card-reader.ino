@@ -5,21 +5,29 @@
 #define SS_PIN 10
 #define RST_PIN 9
 #define I2C_ADDRESS 0x2A
+
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
 String content= "";
+String UID= "";
 char data[12];
 int index = 0;
 
 void sendData()
 {
   Wire.write(data[index]);
-  ++index;
-  if (index >= 11) {
+  index++;
+
+  if (index == 11) {
     index = 0;
+
+    for (int i = 0; i < 12; i++)
+    {
+      data[i] = 0;      
+    }
   }
 }
- 
+
 void setup() 
 {
   Serial.begin(9600);   // Initiate a serial communication
@@ -42,8 +50,8 @@ void loop()
   {
     return;
   }
+  
   //Show UID on serial monitor
-  Serial.print("UID tag : ");
   byte letter;
   for (byte i = 0; i < mfrc522.uid.size; i++) 
   {
@@ -51,8 +59,9 @@ void loop()
      content.concat(String(mfrc522.uid.uidByte[i], HEX));
   }
   content.toUpperCase();
-  content.substring((1)).toCharArray(data, 12);
-  Serial.print(content.substring(1));
-  Serial.println();
+  UID = content.substring((1));
+  UID.toCharArray(data, 12);
+  data[11] = '!'; 
   content = "";
+  UID = "";
 } 

@@ -11,6 +11,12 @@ class App_State(Enum):
     IDLE = 0
     PIN = 1     
     HOME = 2
+    CHOOSE = 3
+    BALANCE = 4
+    SNELPIN = 5
+    WAIT = 6
+    BLOCKED = 7
+    
 
 class Https_Method(Enum):
     GET = 0
@@ -35,15 +41,15 @@ def main():
     global bus
     global address_rfid
     global address_numpad
-    
+
     while True:
         try:
             if current_state == App_State.IDLE:
                 """ 19200 Baud, 8N1, Flow Control Enabled """
                 p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
                 p.text("Hello World\n")
-                
-                
+
+                tries = 0
                 socket.emit("redirect", "welcome")
 
                 customerUID = request_bytes(address_rfid, 11)
@@ -58,18 +64,45 @@ def main():
                 for _ in range(4):
                    pin += request_bytes(address_numpad, 1)
                    socket.emit("page_data", "*")
+                
+                tries += 1
+                if (tries > 2):
+                    socket.emit("block_message")
+                    current_state = App_State.BLOCKED
+
                 socket.emit("sendPin", pin)
                 print(pin)
-
-                current_state = App_State.PIN
+                socket.on("Correct", correct_pin)
 
             if current_state == App_State.HOME:
                 socket.emit("redirect", "home")
                 print("home?")
+                current_state = App_State.BALANCE
+            
+            if current_state == App_State.BALANCE:
+                print("balance is key")
+                socket.emit("redirect", "balance")
+                socket.emit("show_balance")
+                current_state = App_State.SNELPIN
+            
+            if current_state == App_State.SNELPIN:
+                print("blazingly fast")
+                socket.emit("redirect", "snelpin")
+                current_state = App_State.CHOOSE
+            
+            if current_state == App_State.CHOOSE:
+                print("Picky pick")
+                socket.emit("redirect", "choose")
+
         except Exception as e:
             print(e)
 
     
+def correct_pin():
+    global current_state
+    current_state = App_State.HOME
+    print(current_state)
+    main()
 
 def request_bytes(addr: str, amount: int) -> str: 
     data = ""
