@@ -77,19 +77,36 @@ def main():
             if current_state == App_State.HOME:
                 socket.emit("redirect", "home")
                 print("home?")
-                current_state = App_State.BALANCE
+                
+                choice1 = request_bytes(address_numpad, 1)
+                if (str(choice1) == '1'):
+                    current_state = App_State.BALANCE
+                elif (str(choice1) == '2'):
+                    current_state = App_State.SNELPIN
+                elif (str(choice1) == 'A'):
+                    current_state = App_State.IDLE
             
             if current_state == App_State.BALANCE:
                 print("balance is key")
                 socket.emit("redirect", "balance")
                 socket.emit("show_balance")
-                current_state = App_State.SNELPIN
+                
+                choice2 = request_bytes(address_numpad, 1)
+                if(str(choice2) == 'B'):
+                    current_state = App_State.HOME
+                elif (str(choice2) == 'A'):
+                    current_state = App_State.IDLE
             
             if current_state == App_State.SNELPIN:
                 print("blazingly fast")
                 socket.emit("redirect", "snelpin")
-                current_state = App_State.CHOOSE
             
+                choice3 = request_bytes(address_numpad, 1)
+                if(str(choice3) == 'B'):
+                    current_state = App_State.HOME
+                elif (str(choice3) == 'A'):
+                    current_state = App_State.IDLE
+
             if current_state == App_State.CHOOSE:
                 print("Picky pick")
                 socket.emit("redirect", "choose")
