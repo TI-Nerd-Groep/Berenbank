@@ -1,4 +1,4 @@
 {
-    "sketch": "module-software\\sidebuttons\\main.ino",
+    "sketch": "module-software\\dispenser\\dispenser.ino",
     "board": "arduino:avr:uno"
 }
