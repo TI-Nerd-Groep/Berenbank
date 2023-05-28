@@ -1,7 +1,7 @@
 #ifndef Dispenser_h
 #define Dispenser_h
 
-#define DISPENSE_TIME 500
+#define DISPENSE_TIME 600
 class Dispenser
 {
 private:
@@ -13,15 +13,16 @@ public:
         this->pin = pin;
         this->stopTime = 0;
         this->isRunning = false;
+        pinMode(pin, OUTPUT);
     }
 
     void dispense(){
-        stopTime = DISPENSE_TIME + (isRunning) ? stopTime : millis();
+        stopTime = DISPENSE_TIME + ((isRunning) ? stopTime : millis());
+
         isRunning = true;
     }
 
-    void loop(){
-
+    void update(){
         if (!isRunning)
         {
             digitalWrite(pin, 0);
@@ -29,7 +30,7 @@ public:
         }
 
         digitalWrite(pin, 1);
-
+        Serial.println( this->isRunning);
         if (millis() >= stopTime)
             isRunning = false;
     }

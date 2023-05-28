@@ -1,4 +1,5 @@
 {
     "sketch": "module-software\\dispenser\\dispenser.ino",
-    "board": "arduino:avr:uno"
+    "board": "arduino:avr:uno",
+    "port": "COM6"
 }
