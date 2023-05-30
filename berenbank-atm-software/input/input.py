@@ -29,8 +29,8 @@ class sidebutton(Enum):
     L4 = '7'
     R1 = '8'
     R2 = '9'
-    R3 = '10'
-    R4 = '11'
+    R3 = ':'
+    R4 = ';'
     
 http_session = requests.Session()
 http_session.verify = False
@@ -58,14 +58,14 @@ def main():
             if current_state == App_State.IDLE:
                 """ 19200 Baud, 8N1, Flow Control Enabled """
                 p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
-                p.text("Hello World\n")
 
                 tries = 0
                 socket.emit("redirect", "welcome")
 
                 customerUID = request_bytes(address_rfid, 11)
-                socket.emit("sendUID", customerUID)
+                customerUID = request_bytes(address_rfid, 11)
                 print(customerUID)
+                socket.emit("sendUID", customerUID)
                 current_state = App_State.PIN
 
             if current_state == App_State.PIN:
@@ -74,9 +74,11 @@ def main():
                 pin = ""
                 for _ in range(4):
                    pin += request_bytes(address_numpad, 1)
+                   print(pin)
                    socket.emit("page_data", "*")
-                
+                   
                 tries += 1
+                
                 if (tries > 2):
                     socket.emit("block_message")
                     current_state = App_State.BLOCKED
@@ -98,7 +100,7 @@ def main():
                     current_state = App_State.BALANCE
 
                 elif btn == sidebutton.L4:
-                    end()
+                    current_state = App_State.IDLE
             
             if current_state == App_State.BALANCE:
                 print("balance is key")
@@ -111,7 +113,7 @@ def main():
                     current_state = App_State.HOME
 
                 elif btn == sidebutton.L4.value:
-                    end()
+                    current_state = App_State.IDLE
             
             if current_state == App_State.SNELPIN:
                 print("blazingly fast")
@@ -142,7 +144,7 @@ def main():
                     current_state = App_State.HOME
 
                 elif btn == sidebutton.L4.value:
-                    end()
+                    current_state = App_State.IDLE
 
 
             if current_state == App_State.CHOOSE:
@@ -161,7 +163,7 @@ def end():
     #
     #
     
-    current_state = App_State.SNELPIN
+    current_state = App_State.IDLE
 
 
 def correct_pin():
