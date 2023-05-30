@@ -1,33 +1,31 @@
 #include <Wire.h>
-
 #include "lib/dispenser.h"
 
-#define I2C_ADDRESS 0x2E
-
-Dispenser dispensers[2] = {
+Dispenser dispensers[3] = {
     Dispenser(3),
-    Dispenser(4)
+    Dispenser(4),
+    Dispenser(7)
 };
 
+#define I2C_ADDRESS 0x3A
+
 void receiveHandle(int args){
-    while(1 < Wire.available()) { 
-        int disp = Wire.read();
-        dispensers[disp].dispense();
+    while (Wire.available())
+    {
+        int target = Wire.read();
+        dispensers[target].dispense();
     }
 }
 
 void setup(){
+    Wire.onReceive(receiveHandle);
     Wire.begin(I2C_ADDRESS);
-    Wire.onReceive(requestHandle);
-
     Serial.begin(9600);
 }
 
 void loop(){
-    for (size_t i = 0; i < 2; i++)
+    for (size_t i = 0; i < 3; i++)
     {
         dispensers[i].update();
     }
-   
-   
 }
