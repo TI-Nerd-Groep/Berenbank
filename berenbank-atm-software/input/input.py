@@ -212,7 +212,7 @@ def print_receipt(five = 0, twen = 0, fift = 0):
     p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
 
     p.set(align="CENTER", text_type="BU", width=5, height=5)
-    p.text("Berenbank"\r\n)
+    p.text("Berenbank\r\n")
 
     p.set(align="CENTER")
     p.text("Wijnhaven 107\r\n")
