@@ -195,37 +195,41 @@ def request_bytes(addr: str, amount: int, break_state = lambda: False) -> str:
     return data
 
 def print_receipt(five = 0, twen = 0, fift = 0):
-    """ 19200 Baud, 8N1, Flow Control Enabled """
-    p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
 
-    p.set(align="CENTER", text_type="BU", width=5, height=5)
-    p.text("Berenbank")
-    p.text()
+    body_txt = ""
 
-    p.set(align="CENTER")
-    p.text("Wijnhaven 107")
-    p.text("3011 WN Rotterdam")
-    p.text("------------------------")
-    p.text()
-    p.text()
-    
-    p.set()
     total = 0
     for bill, amount in {"5,-": five, "20,-": twen, "50,-": fift}:
         total += amount
 
         if amount > 0:
-            p.text(f"{amount} * {bill}")
+            body_txt += f"{amount} * {bill}\r\n"
 
-    p.text("------------------------")
+    body_txt += f"TOTAAL: {total},-\r\n"
+    
+
+    """ 19200 Baud, 8N1, Flow Control Enabled """
+    p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
+
+    p.set(align="CENTER", text_type="BU", width=5, height=5)
+    p.text("Berenbank"\r\n)
+
+    p.set(align="CENTER")
+    p.text("Wijnhaven 107\r\n")
+    p.text("3011 WN Rotterdam\r\n")
+    p.text("------------------------\r\n")
+    p.text("\r\n")
+    p.text("\r\n")
+    p.text(body_txt)
+    p.set()
+
+    p.text("------------------------\r\n")
     p.set(width=5, height=5)
-    p.text(f"TOTAAL: {total},-")
+    p.text(f"TOTAAL: {total},-\r\n")
 
-    p.text()
     p.set()
     p.text(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-    p.cut()
 
 def https_request(endpoint: str, method: Https_Method, params: dict):
     pass
