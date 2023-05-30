@@ -58,9 +58,6 @@ def main():
     while True:
         try:
             if current_state == App_State.IDLE:
-                """ 19200 Baud, 8N1, Flow Control Enabled """
-                p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
-
                 tries = 0
                 socket.emit("redirect", "welcome")
 
@@ -195,6 +192,11 @@ def request_bytes(addr: str, amount: int, break_state = lambda: False) -> str:
             data += char
 
     return data
+
+def print_receipt():
+    """ 19200 Baud, 8N1, Flow Control Enabled """
+    p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
+
 
 def https_request(endpoint: str, method: Https_Method, params: dict):
     pass
