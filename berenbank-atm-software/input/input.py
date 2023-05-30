@@ -46,6 +46,8 @@ address_receipt = 0x2B
 address_sidebuttons = 0x2F
 
 current_state = App_State.IDLE
+pin_lock = True
+
 
 def main():
     global current_state
@@ -69,23 +71,28 @@ def main():
                 current_state = App_State.PIN
 
             if current_state == App_State.PIN:
-                socket.emit("redirect", "pin")
-
-                pin = ""
-                for _ in range(4):
-                   pin += request_bytes(address_numpad, 1)
-                   print(pin)
-                   socket.emit("page_data", "*")
-                   
-                tries += 1
                 
-                if (tries > 2):
-                    socket.emit("block_message")
-                    current_state = App_State.BLOCKED
-
-                socket.emit("sendPin", pin)
-                print(pin)
+                   
                 socket.on("Correct", correct_pin)
+
+                while(pin_lock):
+                    socket.emit("redirect", "pin")
+
+                    pin = ""
+                    for _ in range(4):
+                        pin += request_bytes(address_numpad, 1)
+                        print(pin)
+                        socket.emit("page_data", "*")
+                    print(pin)
+                    socket.emit("sendPin", pin)
+
+                    tries += 1
+                
+                    if (tries > 2):
+                        socket.emit("block_message")
+                        current_state = App_State.BLOCKED
+                        break
+
 
             if current_state == App_State.HOME:
                 socket.emit("redirect", "home")
@@ -161,16 +168,18 @@ def end():
 
     # reset all local variables
     #
-    #
+    pin_lock = True
     
     current_state = App_State.IDLE
 
 
 def correct_pin():
     global current_state
+    global pin_lock
     current_state = App_State.HOME
     print(current_state)
-    main()
+    pin_lock = False
+    
 
 def request_bytes(addr: str, amount: int) -> str: 
     data = ""
