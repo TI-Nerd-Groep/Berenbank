@@ -80,7 +80,7 @@ def main():
 
                     pin = ""
                     for _ in range(4):
-                        pin += request_bytes(address_numpad, 1)
+                        pin += request_bytes(address_numpad, 1, lambda: not pin_lock)
                         print(pin)
                         socket.emit("page_data", "*")
                     print(pin)
@@ -107,7 +107,7 @@ def main():
                     current_state = App_State.BALANCE
 
                 elif btn == sidebutton.L4:
-                    current_state = App_State.IDLE
+                    end()
             
             if current_state == App_State.BALANCE:
                 print("balance is key")
@@ -165,7 +165,7 @@ def main():
     
 def end():
     global current_state
-
+    global pin_lock
     # reset all local variables
     #
     pin_lock = True
@@ -181,10 +181,12 @@ def correct_pin():
     pin_lock = False
     
 
-def request_bytes(addr: str, amount: int) -> str: 
+def request_bytes(addr: str, amount: int, break_state = lambda: False) -> str: 
     data = ""
 
     while len(data) < amount:
+        if break_state():
+            return data
         char = chr(bus.read_byte(addr));
     
         if char == chr(0):
