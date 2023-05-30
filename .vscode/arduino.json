@@ -1,5 +1,5 @@
 {
-    "sketch": "module-software\\dispenser\\dispenser.ino",
+    "sketch": "module-software\\sidebuttons\\main.ino",
     "board": "arduino:avr:uno",
-    "port": "COM6"
+    "port": "COM3"
 }
