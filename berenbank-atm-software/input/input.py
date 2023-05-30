@@ -23,14 +23,14 @@ class Https_Method(Enum):
     POST = 1     
 
 class sidebutton(Enum):
-    L1 = 4
-    L2 = 5
-    L3 = 6
-    L4 = 7
-    R1 = 8
-    R2 = 9
-    R3 = 10
-    R4 = 11
+    L1 = '4'
+    L2 = '5'
+    L3 = '6'
+    L4 = '7'
+    R1 = '8'
+    R2 = '9'
+    R3 = '10'
+    R4 = '11'
     
 http_session = requests.Session()
 http_session.verify = False
@@ -91,10 +91,10 @@ def main():
 
                 btn = request_bytes(address_sidebuttons, 1)
 
-                if btn in {sidebutton.L2, sidebutton.L3}:
+                if btn in {sidebutton.L2.value, sidebutton.L3.value}:
                     current_state = App_State.SNELPIN
                 
-                elif btn in {sidebutton.R2, sidebutton.R3}:
+                elif btn in {sidebutton.R2.value, sidebutton.R3.value}:
                     current_state = App_State.BALANCE
 
                 elif btn == sidebutton.L4:
@@ -107,10 +107,10 @@ def main():
 
                 btn = request_bytes(address_sidebuttons, 1)
                 
-                if btn == sidebutton.R4:
+                if btn == sidebutton.R4.value:
                     current_state = App_State.HOME
 
-                elif btn == sidebutton.L4:
+                elif btn == sidebutton.L4.value:
                     end()
             
             if current_state == App_State.SNELPIN:
@@ -119,29 +119,29 @@ def main():
 
                 btn = request_bytes(address_sidebuttons, 1)
 
-                if btn == sidebutton.L1:
+                if btn == sidebutton.L1.value:
                     # request 5 emeralds
-                    ...
+                    socket.emit("withdrawal", 5)
 
-                elif btn == sidebutton.L2:
+                elif btn == sidebutton.L2.value:
                     # request 20 emeralds
-                    ...
+                    socket.emit("withdrawal", 20)
                 
-                elif btn == sidebutton.R1:
+                elif btn == sidebutton.R1.value:
                     #request 50 emeralds
-                    ...
+                    socket.emit("withdrawal", 50)
 
-                elif btn == sidebutton.R2:
+                elif btn == sidebutton.R2.value:
                     #request 75 emeralds
-                    ...
+                    socket.emit("withdrawal", 75)
                 
-                elif btn == sidebutton.R3:
+                elif btn == sidebutton.R3.value:
                     current_state = App_State.CHOOSE
 
-                elif btn == sidebutton.R4:
+                elif btn == sidebutton.R4.value:
                     current_state = App_State.HOME
 
-                elif btn == sidebutton.L4:
+                elif btn == sidebutton.L4.value:
                     end()
 
 

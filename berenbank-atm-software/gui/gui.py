@@ -48,6 +48,10 @@ def show_blocked():
     socket.emit("show_block")
     socket.emit("blocked")
 
+@socket.on("withdrawal")
+def update_balance(amount):
+    socket.emit("withdraw", amount)
+
 def get_page_data(folder):
     return codecs.open(f"{app.template_folder}/{folder}/main.html", "r", "utf-8").read()
 
