@@ -7,7 +7,7 @@ void requestHandle(){
     int result = 0;
 
     for (int i : BTN_PIN)
-        if (digitalRead(BTN_PIN[i]))
+        if (!digitalRead(i))
             result = i;
 
     Wire.write(result);
@@ -16,13 +16,14 @@ void requestHandle(){
 void setup(){
     for (int i : BTN_PIN)
     {
-        pinMode(BTN_PIN[i], INPUT_PULLUP);
+        pinMode(i, INPUT_PULLUP);
     }
-    
+
     Wire.begin(I2C_ADDRESS);
     Wire.onRequest(requestHandle);
 }
 
 void loop(){
+    requestHandle();
 
 }
