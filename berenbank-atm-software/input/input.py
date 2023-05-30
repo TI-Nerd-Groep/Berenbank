@@ -40,10 +40,11 @@ socket = socketio.Client(http_session=http_session)
 socket.connect("https://127.0.0.1:5000")
 
 bus = smbus.SMBus(1)
-address_rfid = 0x2a
-address_numpad = 0x2c
+address_rfid = 0x2A
+address_numpad = 0x2C
 address_receipt = 0x2B
 address_sidebuttons = 0x2F
+address_dispenser = 0x3A
 
 current_state = App_State.IDLE
 pin_lock = True
@@ -120,29 +121,35 @@ def main():
                     current_state = App_State.HOME
 
                 elif btn == sidebutton.L4.value:
-                    current_state = App_State.IDLE
-            
+                    end()
+                    
             if current_state == App_State.SNELPIN:
                 print("blazingly fast")
                 socket.emit("redirect", "snelpin")
 
                 btn = request_bytes(address_sidebuttons, 1)
-
+                time.sleep(1)
                 if btn == sidebutton.L1.value:
                     # request 5 emeralds
                     socket.emit("withdrawal", 5)
+                    bus.write_byte(address_dispenser, 0)
 
                 elif btn == sidebutton.L2.value:
                     # request 20 emeralds
                     socket.emit("withdrawal", 20)
+                    bus.write_byte(address_dispenser, 1)
                 
                 elif btn == sidebutton.R1.value:
                     #request 50 emeralds
                     socket.emit("withdrawal", 50)
+                    bus.write_byte(address_dispenser, 2)
 
                 elif btn == sidebutton.R2.value:
                     #request 75 emeralds
                     socket.emit("withdrawal", 75)
+                    bus.write_byte(address_dispenser, 0)
+                    bus.write_byte(address_dispenser, 1)
+                    bus.write_byte(address_dispenser, 2)
                 
                 elif btn == sidebutton.R3.value:
                     current_state = App_State.CHOOSE
@@ -151,8 +158,7 @@ def main():
                     current_state = App_State.HOME
 
                 elif btn == sidebutton.L4.value:
-                    current_state = App_State.IDLE
-
+                    end()
 
             if current_state == App_State.CHOOSE:
                 print("Picky pick")
@@ -167,7 +173,6 @@ def end():
     global current_state
     global pin_lock
     # reset all local variables
-    #
     pin_lock = True
     
     current_state = App_State.IDLE
