@@ -59,9 +59,6 @@ def main():
     while True:
         try:
             if current_state == App_State.IDLE:
-                """ 19200 Baud, 8N1, Flow Control Enabled """
-                p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
-
                 tries = 0
                 socket.emit("redirect", "welcome")
 
@@ -130,19 +127,26 @@ def main():
                 btn = request_bytes(address_sidebuttons, 1)
                 time.sleep(1)
                 if btn == sidebutton.L1.value:
-                    # request 5 emeralds
+                    # request 5 emeralds                  
+                    print_receipt(0,1,0)
                     socket.emit("withdrawal", 5)
                     bus.write_byte(address_dispenser, 0)
+                    end()
 
                 elif btn == sidebutton.L2.value:
                     # request 20 emeralds
                     socket.emit("withdrawal", 20)
+                    print_receipt(0,1,0)
+                    print("Test")
                     bus.write_byte(address_dispenser, 1)
+                    end()
                 
                 elif btn == sidebutton.R1.value:
-                    #request 50 emeralds
+                    #request 50 emeralds                  
+                    print_receipt(0,1,0)
                     socket.emit("withdrawal", 50)
                     bus.write_byte(address_dispenser, 2)
+                    end()
 
                 elif btn == sidebutton.R2.value:
                     #request 75 emeralds
@@ -150,6 +154,7 @@ def main():
                     bus.write_byte(address_dispenser, 0)
                     bus.write_byte(address_dispenser, 1)
                     bus.write_byte(address_dispenser, 2)
+                    end()
                 
                 elif btn == sidebutton.R3.value:
                     current_state = App_State.CHOOSE
@@ -184,7 +189,39 @@ def correct_pin():
     current_state = App_State.HOME
     print(current_state)
     pin_lock = False
+
+def print_receipt(five = 0, twen = 0, fift = 0):
+    print("bon")
+    body_txt = ""
+
+    total = 5 * five + 20 * twen + 50 * fift
+    for bill, amount in {"5,-": five, "20,-": twen, "50,-": fift}.items():
+
+        if amount > 0:
+            body_txt += f"{amount} * {bill}\r\n"
+
+    body_txt += f"TOTAAL: {total},-\r\n"
     
+
+    """ 19200 Baud, 8N1, Flow Control Enabled """
+    p = Serial(devfile='/dev/serial0', baudrate=19200, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True)
+    
+    p.set(align="CENTER", text_type="BU", width=2, height=2)
+    p.text("Berenbank\r\n")
+
+    p.set(align="CENTER")
+    p.text("Wijnhaven 107\r\n")
+    p.text("3011 WN Rotterdam\r\n")
+    p.text("------------------------\r\n")
+    p.text("\r\n")
+    p.text("\r\n")
+    p.text(body_txt)
+    p.set()
+
+    p.text("------------------------\r\n")
+    p.set(width=2, height=2)
+    p.text(f"TOTAAL: {total},-\r\n")
+
 
 def request_bytes(addr: str, amount: int, break_state = lambda: False) -> str: 
     data = ""
