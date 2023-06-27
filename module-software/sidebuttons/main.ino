@@ -8,12 +8,13 @@ void requestHandle(){
 
     for (int i : BTN_PIN)
         if (!digitalRead(i))
-            result = i+49;
+            result = i+48;
 
     Wire.write(result);
 }
 
 void setup(){
+    Serial.begin(9600);
     for (int i : BTN_PIN)
     {
         pinMode(i, INPUT_PULLUP);
@@ -25,5 +26,4 @@ void setup(){
 
 void loop(){
     // requestHandle();
-
 }
