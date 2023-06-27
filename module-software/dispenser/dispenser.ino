@@ -18,7 +18,7 @@ void receiveHandle(int args){
 
 void setup(){
     Wire.begin(I2C_ADDRESS);
-    Wire.onReceive(requestHandle);
+    Wire.onReceive(receiveHandle);
 
     Serial.begin(9600);
 }
