@@ -8,7 +8,7 @@ void requestHandle(){
 
     for (int i : BTN_PIN)
         if (!digitalRead(i))
-            result = i;
+            result = i+49;
 
     Wire.write(result);
 }
@@ -24,6 +24,6 @@ void setup(){
 }
 
 void loop(){
-    requestHandle();
+    // requestHandle();
 
 }
