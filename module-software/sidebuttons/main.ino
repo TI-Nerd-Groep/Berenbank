@@ -25,5 +25,12 @@ void setup(){
 }
 
 void loop(){
+    // int result = 0;
+
+    // for (int i : BTN_PIN)
+    //     if (!digitalRead(i))
+    //         result = i;
+
+    // Serial.println(result);
     // requestHandle();
 }

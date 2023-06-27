@@ -1,5 +1,5 @@
 {
     "sketch": "module-software\\sidebuttons\\main.ino",
     "board": "arduino:avr:uno",
-    "port": "COM9"
+    "port": "COM3"
 }
