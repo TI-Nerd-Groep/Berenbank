@@ -4,9 +4,10 @@
 
 #define I2C_ADDRESS 0x2E
 
-Dispenser dispensers[2] = {
+Dispenser dispensers[3] = {
     Dispenser(3),
-    Dispenser(4)
+    Dispenser(4),
+    Dispenser(5)
 };
 
 void receiveHandle(int args){
@@ -24,10 +25,8 @@ void setup(){
 }
 
 void loop(){
-    for (size_t i = 0; i < 2; i++)
+    for (size_t i = 0; i < 3; i++)
     {
         dispensers[i].update();
     }
-   
-   
 }
